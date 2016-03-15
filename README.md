@@ -159,7 +159,7 @@ FamilySearch Polymer Style guide
   </dom-module>
   ```
   
-  - Event names should have a prefix stronly related to the name of the element.
+  - Event names should have a prefix strongly related to the name of the element. In most cases, the prefix should be the name of the element. For example, if your component is named `birch-selector` and it needs to fire an event to notify subscribers of an error, it should probably fire a `birch-selector-error` event.
   
   > Why? Not only will they be uniquely namespaced, but if you use any one of these [event names](https://www.w3.org/TR/shadow-dom/#h-events-that-are-not-leaked-into-ancestor-trees), the event will not propegate through the shadow DOM. 
 
