@@ -20,9 +20,9 @@ FamilySearch Polymer Style guide
 
   - Web Component APIs and attribute names should be consistent with native DOM elements.
   - Follow the single-responsibility principle.
-  - Extend existing elements (e.g. [PolymerElements](https://elements.polymer-project.org/)) instead of reimplmenting the functionality.
-  - Fail silenty. Components should act like native DOM and should not throw JS errors. Fire an [event](#events) instead.
-  - List all dependencies of the web component since the browser will dedup mulitple requests for the same file.
+  - Extend existing elements (e.g. [PolymerElements](https://elements.polymer-project.org/)) instead of reimplementing the functionality.
+  - Fail silently. Components should act like native DOM and should not throw JS errors. Fire an [event](#events) instead.
+  - List all dependencies of the web component since the browser will deduplicate multiple requests for the same file.
 
 ## Naming
 
@@ -48,7 +48,7 @@ FamilySearch Polymer Style guide
   <awesome-web-component></awesome-web-component>
   ```
   
-  - Avoid prefixs shorter than three characters.
+  - Avoid prefixes shorter than three characters.
   
   ```html
   <!-- bad -->
@@ -95,7 +95,7 @@ FamilySearch Polymer Style guide
   
   - Boolean values should be based on the existence of the attribute and not its value.
   
-  > Why? Conforms to navive DOM attribute properties (e.g. `hidden`, `disabled`).
+  > Why? Conforms to native DOM attribute properties (e.g. `hidden`, `disabled`).
   
   ```html
   <!-- bad -->
@@ -105,9 +105,9 @@ FamilySearch Polymer Style guide
   <familysearch-component boolean-attr></familysearch-component>
   ```
   
-  - Boolean attributes should not prefix the name with words like "is", "show", or "has" as you would in Javascript.
+  - Boolean attributes should not prefix the name with words like "is", "show", or "has" as you would in JavaScript.
   
-  > Why? Conforms to navive DOM attribute property names (e.g. `hidden`, `disabled`).
+  > Why? Conforms to native DOM attribute property names (e.g. `hidden`, `disabled`).
   
   ```html
   <!-- bad -->
@@ -159,9 +159,9 @@ FamilySearch Polymer Style guide
   </dom-module>
   ```
   
-  - Event names should have a prefix strongly related to the name of the element. In most cases, the prefix should be the name of the element. For example, if your component is named `birch-selector` and it needs to fire an event to notify subscribers of an error, it should probably fire a `birch-selector-error` event.
+  - Event names should have a prefix strongly related to the name of the element. In most cases, the prefix should be the name of the element (e.g. `familysearch-component-change`).
   
-  > Why? Not only will they be uniquely namespaced, but if you use any one of these [event names](https://www.w3.org/TR/shadow-dom/#h-events-that-are-not-leaked-into-ancestor-trees), the event will not propegate through the shadow DOM. 
+  > Why? Not only will they be uniquely namespaced, but if you use any one of these [event names](https://www.w3.org/TR/shadow-dom/#h-events-that-are-not-leaked-into-ancestor-trees), the event will not propagate through the shadow DOM. 
 
   ```js
   // bad
@@ -181,8 +181,51 @@ FamilySearch Polymer Style guide
   this.fire('familysearch-component-data-change', {});
   this.fire('familysearch-component-upload-success', {});
   ```
+
+  - Use `this.listen()` instead of `this.addEventListener()`.
+
+  > Why? Works cross platform and provides an `unlisten()` function to unsubscribe from the event.
+
+  ```html
+  <!-- bad -->
+  <dom-module id="familysearch-component">
+    <template>
+      <button id="myButton">Click Me</button>
+    </template>
   
-  - Use declaritive event hanlders over JS event handlers (e.g. use the `on-tap` attribute instead of using the `listeners` property or `this.addEventListener`).
+    <script>
+      Polymer({
+        is: 'familysearch-component',
+        ready: function() {
+          this.$.myButton.addEventListener('click', function(e) {
+            console.log('tapped');
+          });
+        }
+      });
+    </script>
+  </dom-module>
+
+  <!-- good -->
+  <dom-module id="familysearch-component">
+    <template>
+      <button id="myButton">Click Me</button>
+    </template>
+  
+    <script>
+      Polymer({
+        is: 'familysearch-component',
+        ready: function() {
+          this.listen(this.$.myButton, 'tap', 'handleTap');
+        },
+        handleTap: function() {
+          console.log('tapped');
+        }
+      });
+    </script>
+  </dom-module>
+  ```
+
+  - Favor declarative event handlers over JS event handlers (e.g. use the `on-tap` attribute instead of using the `listeners` property or  `this.listen()`).
   
   ```html
   <!-- bad -->
@@ -197,14 +240,12 @@ FamilySearch Polymer Style guide
         listeners: {
           tap: 'handleTap'
         },
+        created: function() {
+          this.listen(this, 'tap', 'handleTap');
+        }
         handleTap: function(e, detail) {
           console.log('tapped');
         },
-        created: function() {
-          this.addEventListener('click', function(e) {
-            console.log('clicked');
-          })
-        }
       });
     </script>
   </dom-module>
@@ -260,7 +301,7 @@ FamilySearch Polymer Style guide
   </dom-module>
   ```
 
-  - Private properties should be prfixed with an underscore.
+  - Private properties should be prefixed with an underscore.
   
   ```html
   <!-- bad -->
@@ -372,7 +413,7 @@ FamilySearch Polymer Style guide
   </dom-module>
   ```
 
-  - Private methods should be prfixed with an underscore.
+  - Private methods should be prefixed with an underscore.
   
   ```html
   <!-- bad -->
@@ -404,9 +445,9 @@ FamilySearch Polymer Style guide
   
 ## Bindings
 
-  - Use `dom-if` to conditionally render large portions of the DOM or DOM that will not toogle between hidden/shown states.
-  - Use the `hiddden$=` attribute to conditionally render small protions of the DOM or DOM that will toogle between hidden/shown states.
-  - Use single bindings `[[ ]]` rather than dobule bindings `{{ }}` 99% of the time.
+  - Use `dom-if` to conditionally render large portions of the DOM or DOM that will not toggle between hidden/shown states.
+  - Use the `hidden$=` attribute to conditionally render small portions of the DOM or DOM that will toggle between hidden/shown states.
+  - Favor single bindings `[[ ]]` over double bindings `{{ }}`.
 
 **[back to top](#table-of-contents)**
 
