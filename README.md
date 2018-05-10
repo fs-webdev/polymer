@@ -27,33 +27,33 @@ FamilySearch Polymer Style guide
 ## Naming
 
   - Component names must include a dash. The text before the dash is effectively a namespace.
-  
+
   ```html
   <!-- bad -->
   <myComponent></myComponent>
-  
+
   <!-- good -->
   <my-component><my-component>
   ```
-  
+
   - Component names should be lowercased and dash separated.
-  
+
   > Why? Conforms to native DOM element names.
-  
+
   ```html
   <!-- bad -->
   <Awesome-WebComponent></Awesome-WebComponent>
-  
+
   <!-- good -->
   <awesome-web-component></awesome-web-component>
   ```
-  
+
   - Avoid prefixes shorter than three characters.
-  
+
   ```html
   <!-- bad -->
   <fs-component></fs-component>
-  
+
   <!-- good -->
   <familysearch-component></familysearch-component>
   ```
@@ -63,7 +63,7 @@ FamilySearch Polymer Style guide
 ## Attributes
 
   - Use attributes to pass data into the web component.
-  
+
   ```html
   <!-- bad -->
   <script>
@@ -76,55 +76,55 @@ FamilySearch Polymer Style guide
     }
   });
   </script>
-  
+
   <!-- good -->
   <familysearch-component data="value"></familysearch-component>
   ```
-  
+
   - Attribute names should be lowercased and dash separated.
-  
+
   > Why? Conforms to native DOM attribute names. Also produces camelCased property names in the Polymer object.
-  
+
   ```html
   <!-- bad -->
   <familysearch-component myAttribute="value"></familysearch-component>
-  
+
   <!-- good -->
   <familysearch-component my-attribute="value"></familysearch-component>
   ```
-  
+
   - Boolean values should be based on the existence of the attribute and not its value.
-  
+
   > Why? Conforms to native DOM attribute properties (e.g. `hidden`, `disabled`).
-  
+
   ```html
   <!-- bad -->
   <familysearch-component boolean-attr="false"></familysearch-component>
-  
+
   <!-- good -->
   <familysearch-component boolean-attr></familysearch-component>
   ```
-  
+
   - Boolean attributes should not prefix the name with words like "is", "show", or "has" as you would in JavaScript.
-  
+
   > Why? Conforms to native DOM attribute property names (e.g. `hidden`, `disabled`).
-  
+
   ```html
   <!-- bad -->
   <familysearch-component is-active></familysearch-component>
-  
+
   <!-- good -->
   <familysearch-component active></familysearch-component>
   ```
-  
-  - Boolean attributes that remove or disable functionality should be prefixed with the word "no". 
-  
+
+  - Boolean attributes that remove or disable functionality should be prefixed with the word "no".
+
   > Why? This isn't a pattern used in native DOM elements but conforms to a Polymer standard (e.g. paper-button uses `noink` to disable the ripple effect).
 
   ```html
   <!-- bad -->
   <familysearch-component disable-touch></familysearch-component>
-  
+
   <!-- good -->
   <familysearch-component no-touch></familysearch-component>
   ```
@@ -134,20 +134,20 @@ FamilySearch Polymer Style guide
 ## Events
 
   - Fire events to pass data out of the web component.
-  
+
   ```html
   <!-- bad -->
   <familysearch-component>
     <!-- don't use bindings to modify a parent elements data -->
-    <other-component data={{data}}></other-component> 
+    <other-component data={{data}}></other-component>
   </familysearch-component>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <template>
       <button on-click="handleClick">Click Me</button>
     </template>
-  
+
     <script>
       Polymer({
         is: 'familysearch-component',
@@ -158,25 +158,25 @@ FamilySearch Polymer Style guide
     </script>
   </dom-module>
   ```
-  
+
   - Event names should have a prefix strongly related to the name of the element. In most cases, the prefix should be the name of the element (e.g. `familysearch-component-change`).
-  
-  > Why? Not only will they be uniquely namespaced, but if you use any one of these [event names](https://www.w3.org/TR/shadow-dom/#h-events-that-are-not-leaked-into-ancestor-trees), the event will not propagate through the shadow DOM. 
+
+  > Why? Not only will they be uniquely namespaced, but if you use any one of these [event names](https://www.w3.org/TR/shadow-dom/#h-events-that-are-not-leaked-into-ancestor-trees), the event will not propagate through the shadow DOM.
 
   ```js
   // bad
   this.fire('error', new Error());
-  
+
   // good
   this.fire('familysearch-component-error', new Error());
   ```
-  
+
   - Event names should end in a [base form](http://grammar.yourdictionary.com/parts-of-speech/verbs/infinitive-verb.html) verb or a noun.
-  
+
   ```js
-  // bad 
+  // bad
   this.fire('familysearch-component-data-changed', {});
-  
+
   // good
   this.fire('familysearch-component-data-change', {});
   this.fire('familysearch-component-upload-success', {});
@@ -192,7 +192,7 @@ FamilySearch Polymer Style guide
     <template>
       <button id="myButton">Click Me</button>
     </template>
-  
+
     <script>
       Polymer({
         is: 'familysearch-component',
@@ -210,7 +210,7 @@ FamilySearch Polymer Style guide
     <template>
       <button id="myButton">Click Me</button>
     </template>
-  
+
     <script>
       Polymer({
         is: 'familysearch-component',
@@ -226,14 +226,14 @@ FamilySearch Polymer Style guide
   ```
 
   - Favor declarative event handlers over JS event handlers (e.g. use the `on-tap` attribute instead of using the `listeners` property or  `this.listen()`).
-  
+
   ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
     <template>
       <button>Click Me</button>
     </template>
-  
+
     <script>
       Polymer({
         is: 'familysearch-component',
@@ -249,13 +249,13 @@ FamilySearch Polymer Style guide
       });
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <template>
       <button on-tap="handleTap">Click Me</button>
     </template>
-  
+
     <script>
       Polymer({
         is: 'familysearch-component',
@@ -272,9 +272,9 @@ FamilySearch Polymer Style guide
 ## Properties
 
   - Property names should be camelCased.
-  
+
   > Why? Produces lowercased, dashed separated attribute names in the DOM.
-  
+
   ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
@@ -287,7 +287,7 @@ FamilySearch Polymer Style guide
       });
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <script>
@@ -302,7 +302,7 @@ FamilySearch Polymer Style guide
   ```
 
   - Private properties should be prefixed with an underscore.
-  
+
   ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
@@ -315,7 +315,7 @@ FamilySearch Polymer Style guide
       });
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <script>
@@ -328,9 +328,9 @@ FamilySearch Polymer Style guide
     </script>
   </dom-module>
   ```
-  
+
   - Define constants outside of the Polymer constructor.
-  
+
   ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
@@ -346,23 +346,23 @@ FamilySearch Polymer Style guide
       });
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <script>
       var CONST = 'value';
-      
+
       Polymer({
         is: 'familysearch-component',
       });
     </script>
   </dom-module>
   ```
-  
+
   - Wrap the contents of the script tag inside an immediately-invoked function expression (IIFE).
-  
+
   > Why? To prevent global variables from being created since the script tag is run in the `window` scope.
-  
+
   ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
@@ -370,7 +370,7 @@ FamilySearch Polymer Style guide
     var isNowGlobal = true;
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <script>
@@ -382,11 +382,11 @@ FamilySearch Polymer Style guide
   ```
 
 **[back to top](#table-of-contents)**
-  
+
 ## Methods
 
   - Method names should be camelCased.
-  
+
    ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
@@ -399,7 +399,7 @@ FamilySearch Polymer Style guide
       });
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <script>
@@ -414,7 +414,7 @@ FamilySearch Polymer Style guide
   ```
 
   - Private methods should be prefixed with an underscore.
-  
+
   ```html
   <!-- bad -->
   <dom-module id="familysearch-component">
@@ -427,7 +427,7 @@ FamilySearch Polymer Style guide
       });
     </script>
   </dom-module>
-  
+
   <!-- good -->
   <dom-module id="familysearch-component">
     <script>
@@ -442,7 +442,7 @@ FamilySearch Polymer Style guide
   ```
 
 **[back to top](#table-of-contents)**
-  
+
 ## Bindings
 
   - Use `dom-if` to conditionally render large portions of the DOM or DOM that will not toggle between hidden/shown states.
@@ -451,12 +451,6 @@ FamilySearch Polymer Style guide
 
 **[back to top](#table-of-contents)**
 
-## Documentation
-
-  - Use the [Polymer Style Guide](https://polymerelements.github.io/style-guide/#documentation) documentation
-
-**[back to top](#table-of-contents)**
-  
 ## Accessibility
 
   - Follow web component [accessibility](https://www.polymer-project.org/0.5/articles/accessible-web-components.html) best practices.
@@ -466,6 +460,8 @@ FamilySearch Polymer Style guide
 
 ## Resources
 
+- [Web Components Best Practices and Gotchas Confluence Page](https://almtools.ldschurch.org/fhconfluence/display/Product/Web+Components%3A+Best+Practices+and+Gotcha%27s)
+- [The Gold Standard Checklist for Web Components](https://github.com/webcomponents/gold-standard/wiki)
 - [Web Component Best Practices](http://webcomponents.org/articles/web-components-best-practices/)
 - [Google Web Components Style Guide](https://github.com/GoogleWebComponents/style-guide)
 
